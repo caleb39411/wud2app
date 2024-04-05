@@ -38,9 +38,9 @@ bool wudparts_open(const char *path)
 		}
 		part_offset_current[i] = 0;
 		part_offset_start[i] = offset;
-		fseeko64(parts[i],0,SEEK_END);
-		uint64_t fsize = ftello64(parts[i]);
-		fseeko64(parts[i],0,SEEK_SET);
+		fseeko(parts[i],0,SEEK_END);
+		uint64_t fsize = ftello(parts[i]);
+		fseeko(parts[i],0,SEEK_SET);
 		if((i == 11 && fsize != 0x53A00000) || (i != 11 && fsize != 0x80000000))
 		{
 			printf("game_part%i.wud has a wrong filesize!\n", i+1);
@@ -80,7 +80,7 @@ static size_t _wudparts_read_offset(uint8_t *buf, uint64_t offset, size_t len)
 			if(part_offset_current[i] != seekOffset)
 			{
 				printf("Seeking to 0x%" PRIx64 " in game_part%i.wud\n", seekOffset, i+1);
-				fseeko64(parts[i], seekOffset, SEEK_SET);
+				fseeko(parts[i], seekOffset, SEEK_SET);
 				part_offset_current[i] = seekOffset;
 			}
 			size_t toread = (size_t)((offset + len) > part_offset_end[i]) ? (part_offset_end[i] - offset) : len;

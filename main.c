@@ -9,7 +9,7 @@
 #define _LARGEFILE64_SOURCE
 
 #include <stdio.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <inttypes.h>
@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
-		fseeko64(f, 0x18000, SEEK_SET);
+		fseeko(f, 0x18000, SEEK_SET);
 		fread(partTblEnc, 1, 0x8000, f);
 	}
 	uint8_t iv[16];
@@ -219,7 +219,7 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
-		fseeko64(f, offset, SEEK_SET);
+		fseeko(f, offset, SEEK_SET);
 		fread(fstEnc, 1, 0x8000, f);
 	}
 	void *fstDec = malloc(0x8000);
@@ -254,7 +254,7 @@ int main(int argc, char *argv[])
 		}
 		else
 		{
-			fseeko64(f, offset + CNTOff, SEEK_SET);
+			fseeko(f, offset + CNTOff, SEEK_SET);
 			fread(titleF, 1, ALIGN_FORWARD(CNTSize,16), f);
 		}
 		uint8_t *titleDec = malloc(ALIGN_FORWARD(CNTSize,16));
@@ -348,7 +348,7 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
-		fseeko64(f, offset, SEEK_SET);
+		fseeko(f, offset, SEEK_SET);
 		fread(fHdr, 1, 0x8000, f);
 	}
 	uint32_t fHdrCnt = __builtin_bswap32(*(uint32_t*)(fHdr+0x10));
@@ -365,7 +365,7 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
-		fseeko64(f, offset + 0x8000, SEEK_SET);
+		fseeko(f, offset + 0x8000, SEEK_SET);
 		fread(fstEnc, 1, ALIGN_FORWARD(fstSize,16), f);
 	}
 	//write FST to file
@@ -396,7 +396,7 @@ int main(int argc, char *argv[])
 		if(use_wudparts)
 			wudparts_seek(totalAppOffset);
 		else
-			fseeko64(f, totalAppOffset, SEEK_SET);
+			fseeko(f, totalAppOffset, SEEK_SET);
 		uint64_t tSize = __builtin_bswap64(tmd->Contents[curCont].Size);
 		uint32_t curContentCid = __builtin_bswap32(tmd->Contents[curCont].ID);
 		char outF[64];
